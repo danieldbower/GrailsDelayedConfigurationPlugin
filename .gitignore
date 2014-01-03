@@ -5,3 +5,6 @@ target-eclipse
 dist
 *.h2.db
 *.lock.db
+grails-delayed-configuration*.zip
+grails-delayed-configuration*.zip.sha1
+plugin.xml
