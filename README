@@ -1,0 +1,29 @@
+If you need some beans to be instantiated only when a user of your application turns on some certain functionality, you can do so here.
+
+To do so, add the plugin as a dependency to your BuildConfig.groovy:
+compile ":delayed-configuration:0.1"
+
+Next, you'll need to create a service that implements com.infinum.grails.plugins.delayedconfiguration.IDelayedConfiguration.  
+
+In that Service, you'll have something like:
+
+class DelayedConfigurationService implements IDelayedConfiguration {
+  void configure(BeanBuilder builder, Map config){
+    builder.beans {
+      myBean(BeanClass)
+            
+      Map aConfig = config.someOptions
+      if(aConfig){
+        anotherBean(AnotherClass)
+      }
+
+      if(someService.returnsABoolean()){
+        yetAnotherBean(YetAnotherClass){
+            dependentProperty = ref('myBean')
+        }
+      }
+  }
+}
+
+Finally, to access any of those beans in DelayedConfigurationService from your existing services, controllers, etc.  You'll have to inject the DelayedConfigurationMgmtService and access your bean with:
+delayedConfigurationMgmtService.bean('myBean')
