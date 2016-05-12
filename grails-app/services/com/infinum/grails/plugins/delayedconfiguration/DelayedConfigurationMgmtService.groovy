@@ -38,6 +38,14 @@ class DelayedConfigurationMgmtService {
 	}
 	
 	/**
+	 * We lose out on having Grails dependency inject these beans into our other 
+	 * services, so they'll have to access through this service.
+	 */
+	Collection beans(Class clazz){
+		return localSpringContext.getBeansOfType(clazz)?.values()
+	}
+
+	/**
 	 * We can manually kick off reconfiguration of the beans here.
 	 * The existing delayed config beans are destroyed and recreated.
 	 */
